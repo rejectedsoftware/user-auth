@@ -1,0 +1,11 @@
+{
+    "name": "user-auth",
+	"description": "Provides multi-service user authentication methods.",
+	"homepage": "https://github.com/rejectedsoftware/user-auth",
+    "authors": [
+		"Sönke Ludwig"
+	],
+    "version": "0.0.1",
+    "dependencies": {
+    }
+}

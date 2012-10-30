@@ -1,0 +1,17 @@
+!!! 5
+html
+	head
+		title Auth Test Page
+		:css
+			.userauth-login {
+				background-color: #eee;
+				border: 1px solid #ddd;
+				padding: 1em;
+				margin: 1em;
+			}
+	body
+		!= auth.generateAuthMixinList(req)
+		- if( auth.getAuthInfo(req).authenticated )
+			p Yay, you are logged in!
+		- else
+			p Please log in above.

@@ -1,0 +1,7 @@
+form#userauth-simple-login-form.userauth-login(action="#{path_prefix}login", method="POST")
+	.email-field
+		label(for="userauth-simple-email") Email
+		input#userauth-simple-email(name="email")
+	.password-field
+		label(for="userauth-simple-password") Password
+		input#userauth-simple-password(name="password")
