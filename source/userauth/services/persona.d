@@ -23,8 +23,10 @@ class PersonaAuthService : UserAuthService {
 
 	void registerRoutes(UrlRouter router, string path_prefix)
 	{
-		router.post(path_prefix~"persona-login", &login);
-		router.post(path_prefix~"persona-logout", &logout);
+		// NOTE: need to be at root directory because the cookie has to be available
+		// on all pages
+		router.post("/persona-login", &login);
+		router.post("/persona-logout", &logout);
 	}
 
 	private void login(HttpServerRequest req, HttpServerResponse res)
