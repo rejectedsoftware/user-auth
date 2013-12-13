@@ -4,7 +4,7 @@ import userauth.userauth;
 import userauth.services.persona;
 import userauth.services.simple;
 
-static this()
+shared static this()
 {
 	setLogLevel(LogLevel.Debug);
 	auto router = new UrlRouter;
