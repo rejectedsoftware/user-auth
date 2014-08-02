@@ -9,19 +9,19 @@ import vibe.templ.diet;
 
 
 class PersonaAuthService : UserAuthService {
-	string generateAuthMixin(HttpServerRequest req, string path_prefix)
+	string generateAuthMixin(HTTPServerRequest req, string path_prefix)
 	{
-		logDebug("logged in: %s %s", req.session !is null, req.cookies);
+		logDebug("logged in: %s %s", req.session.id !is null, req.cookies);
 		auto dst = new MemoryOutputStream;
 		string authUserEmail;
 		if( req.session ) authUserEmail = req.session["email"];
 		parseDietFileCompat!("userauth-persona-auth-mixin.dt",
 			string, "path_prefix",
-			string, "authUserEmail")(dst, Variant(path_prefix), Variant(authUserEmail));
+			string, "authUserEmail")(dst, path_prefix, authUserEmail);
 		return cast(string)dst.data();
 	}
 
-	void registerRoutes(UrlRouter router, string path_prefix)
+	void registerRoutes(URLRouter router, string path_prefix)
 	{
 		// NOTE: need to be at root directory because the cookie has to be available
 		// on all pages
@@ -29,19 +29,19 @@ class PersonaAuthService : UserAuthService {
 		router.post("/persona-logout", &logout);
 	}
 
-	private void login(HttpServerRequest req, HttpServerResponse res)
+	private void login(HTTPServerRequest req, HTTPServerResponse res)
 	{
-		enforceHttp("assertion" in req.form, HttpStatus.BadRequest, "'assertion' field is missing.");
+		enforceHTTP("assertion" in req.form, HTTPStatus.BadRequest, "'assertion' field is missing.");
 
-		auto cres = requestHttp("https://verifier.login.persona.org/verify", (creq){
-				creq.method = HttpMethod.POST;
+		auto cres = requestHTTP("https://verifier.login.persona.org/verify", (scope creq){
+				creq.method = HTTPMethod.POST;
 				creq.writeJsonBody(["assertion": req.form["assertion"], "audience": "http://localhost:8080/"]);
 			});
 
-		enforceHttp(cres.statusCode == HttpStatus.OK, HttpStatus.Unauthorized, "Auth assertion could not be validated.");
+		enforceHTTP(cres.statusCode == HTTPStatus.OK, HTTPStatus.Unauthorized, "Auth assertion could not be validated.");
 
 		auto jres = cres.readJson();
-		enforceHttp(jres.status.get!string == "okay", HttpStatus.Unauthorized, "Auth assertion is invalid.");
+		enforceHTTP(jres.status.get!string == "okay", HTTPStatus.Unauthorized, "Auth assertion is invalid.");
 
 		Session session = req.session;
 		if( !session ) session = res.startSession();
@@ -49,7 +49,7 @@ class PersonaAuthService : UserAuthService {
 		res.writeJsonBody(jres);
 	}
 
-	private void logout(HttpServerRequest req, HttpServerResponse res)
+	private void logout(HTTPServerRequest req, HTTPServerResponse res)
 	{
 		if( req.session ) res.terminateSession();
 		res.writeJsonBody(["message": "Successfully logged out."]);
