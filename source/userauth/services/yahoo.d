@@ -1,14 +1,14 @@
 module userauth.services.yahoo;
 
-import userauth.api;
+import userauth.userauth;
 
-class GoogleAuthService : UserAuthService {
-	string generateAuthMixin()
+class YahooAuthService : UserAuthService {
+	string generateAuthMixin(HTTPServerRequest req, string path_prefix)
 	{
 		assert(false);
 	}
 
-	void registerRoutes(UrlRouter router, string path_prefix)
+	void registerRoutes(URLRouter router, string path_prefix)
 	{
 		assert(false);
 	}

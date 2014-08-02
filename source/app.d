@@ -6,23 +6,23 @@ import userauth.services.simple;
 
 shared static this()
 {
-	setLogLevel(LogLevel.Debug);
-	auto router = new UrlRouter;
+	setLogLevel(LogLevel.debugV);
+	auto router = new URLRouter;
 
 	auto auth = new UserAuth(router, "/");
 	auth.register(new PersonaAuthService);
 	auth.register(new SimpleAuthService);
 
-	void home(HttpServerRequest req, HttpServerResponse res)
+	void home(HTTPServerRequest req, HTTPServerResponse res)
 	{
 		res.renderCompat!("test.dt",
-			HttpServerRequest, "req",
-			UserAuth, "auth")(Variant(req), Variant(auth));
+			HTTPServerRequest, "req",
+			UserAuth, "auth")(req, auth);
 	}
 	router.get("/", &home);
 
-	auto settings = new HttpServerSettings;
+	auto settings = new HTTPServerSettings;
 	settings.port = 8080;
 	settings.sessionStore = new MemorySessionStore;
-	listenHttp(settings, router);
+	listenHTTP(settings, router);
 }

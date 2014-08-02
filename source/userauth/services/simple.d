@@ -7,20 +7,20 @@ import vibe.templ.diet;
 
 
 class SimpleAuthService : UserAuthService {
-	string generateAuthMixin(HttpServerRequest req, string path_prefix)
+	string generateAuthMixin(HTTPServerRequest req, string path_prefix)
 	{
 		auto dst = new MemoryOutputStream;
 		parseDietFileCompat!("userauth-simple-auth-mixin.dt",
-			string, "path_prefix")(dst, Variant(path_prefix));
+			string, "path_prefix")(dst, path_prefix);
 		return cast(string)dst.data();
 	}
 
-	void registerRoutes(UrlRouter router, string path_prefix)
+	void registerRoutes(URLRouter router, string path_prefix)
 	{
 		router.post(path_prefix~"login", &login);
 	}
 
-	void login(HttpServerRequest req, HttpServerResponse res)
+	void login(HTTPServerRequest req, HTTPServerResponse res)
 	{
 		
 	}
