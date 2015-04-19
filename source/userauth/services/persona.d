@@ -14,7 +14,7 @@ class PersonaAuthService : UserAuthService {
 		logDebug("logged in: %s %s", req.session.id !is null, req.cookies);
 		auto dst = new MemoryOutputStream;
 		string authUserEmail;
-		if( req.session ) authUserEmail = req.session["email"];
+		if (req.session) authUserEmail = req.session.get!string("email");
 		parseDietFileCompat!("userauth-persona-auth-mixin.dt",
 			string, "path_prefix",
 			string, "authUserEmail")(dst, path_prefix, authUserEmail);
@@ -45,7 +45,7 @@ class PersonaAuthService : UserAuthService {
 
 		Session session = req.session;
 		if( !session ) session = res.startSession();
-		session["email"] = jres.email.get!string;
+		session.set("email", jres.email.get!string);
 		res.writeJsonBody(jres);
 	}
 

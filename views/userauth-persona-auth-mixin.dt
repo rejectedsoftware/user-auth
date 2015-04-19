@@ -1,26 +1,26 @@
 script(src="http://code.jquery.com/jquery-1.8.2.min.js")
 script(src="https://login.persona.org/include.js")
 
-script(type="application/javascript")
+script(type="application/javascript").
 	navigator.id.watch({
-	  loggedInUser: #{authUserEmail.length ? '\"'~authUserEmail~'\"' : "null"},
-	  onlogin: function(assertion) {
-	    $.ajax({ /* <-- This example uses jQuery, but you can use whatever you'd like */
-	      type: 'POST',
-	      url: '#{path_prefix}persona-login', // This is a URL on your website.
-	      data: {assertion: assertion},
-	      success: function(res, status, xhr) { window.location.reload(); },
-	      error: function(xhr, status, err) { alert("login failure" + err); }
-	    });
-	  },
-	  onlogout: function() {
-	    $.ajax({
-	      type: 'POST',
-	      url: '#{path_prefix}persona-logout', // This is a URL on your website.
-	      success: function(res, status, xhr) { window.location.reload(); },
-	      error: function(xhr, status, err) { alert("logout failure" + err); }
-	    });
-	  }
+		loggedInUser: #{authUserEmail.length ? '\"'~authUserEmail~'\"' : "null"},
+		onlogin: function(assertion) {
+			$.ajax({ /* <-- This example uses jQuery, but you can use whatever you'd like */
+				type: 'POST',
+				url: '#{path_prefix}persona-login', // This is a URL on your website.
+				data: {assertion: assertion},
+				success: function(res, status, xhr) { window.location.reload(); },
+				error: function(xhr, status, err) { alert("login failure" + err); }
+			});
+		},
+		onlogout: function() {
+			$.ajax({
+				type: 'POST',
+				url: '#{path_prefix}persona-logout', // This is a URL on your website.
+				success: function(res, status, xhr) { window.location.reload(); },
+				error: function(xhr, status, err) { alert("logout failure" + err); }
+			});
+		}
 	});
 
 #userauth-persona-login.userauth-login

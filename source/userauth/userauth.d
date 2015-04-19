@@ -47,7 +47,7 @@ class UserAuth {
 		ret.htmlMixin = generateAuthMixinList(req);
 		ret.authenticated = req.session.id !is null;
 		if( req.session ){
-			ret.email = req.session["email"];
+			ret.email = req.session.get!string("email");
 		}
 		return ret;
 	}
